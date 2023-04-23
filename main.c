@@ -45,14 +45,32 @@ char* getMorseCode(char ch){
     if(ch >= 'A' && ch <= 'Z') {
         return MORSE_CODE[ch - 'A'];
     } else if(ch == ' '){
-        return "/";
+        return "/ ";
     } else{
         return "";
     }
 }
 
-int main() {
+char getCharFromMorseCode(char* morseCode){
 
+    // Concat space
+    char input[strlen(morseCode) + 2];
+    strcpy(input, morseCode);
+    strcat(input, " ");
+
+    for(int i = 0; i < 26; i++){
+        if(strcmp(input, MORSE_CODE[i]) == 0){
+            return i + 'A';
+        }
+    }
+    if(strcmp(input, "/ ") == 0){
+        return ' ';
+    }
+    // return a default value if no match was found
+    return '?';
+}
+
+int main() {
 
     while(!done){
         char userInput[255];
@@ -76,6 +94,19 @@ int main() {
                 printf("\n");
                 break;
             case 2:
+                printf("Enter Morse Code to translate:\n");
+                scanf("%[^\n]", &userInput);
+                getchar();
+
+                char* token = strtok(userInput, " ");
+
+                while(token != NULL){
+                    char ch = getCharFromMorseCode(token);
+                    printf("%c", ch);
+                    token = strtok(NULL, " ");
+                }
+                printf("\n");
+
                 break;
             case 3:
                 printf("Exiting, bye bye...");
